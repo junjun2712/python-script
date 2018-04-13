@@ -1,0 +1,22 @@
+我们以登录51cto为例
+from selenium import webdriver
+import  time
+Drivers=webdriver.Firefox()#声明火狐浏览器驱动对象
+try:
+    Drivers.get('http://home.51cto.com/index/')    #发送get请求
+    input = Drivers.find_element_by_id('loginform-username')  #通过元素ID找到用户名输入框
+    print("输入账户")
+    input.send_keys("xxxxxx")  # 输入账户
+    input = Drivers.find_element_by_id('loginform-password')  # 通过元素ID找到密码输入框
+    print("输入密码")
+    input.send_keys("xxxxxxx")  # 输入密码
+    print("点击登录")
+    Drivers.find_element_by_class_name('loginbtn').click()  # 点击登录按钮
+    print("登录成功")
+    time.sleep(10) #10秒后浏览器自动关闭
+finally:
+    Drivers.close()#关闭浏览器
+
+登录成功了 登录成功之后需要一些什么操作 就根据自己的需求来做了
+
+关于元素定位的一些知识 大家就百度自行脑补了 对于元素定位需要大家有一些HTML知识 这个很简单 大家花点时间就能学了 好了 88 
