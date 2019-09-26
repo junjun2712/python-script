@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocelot
+  namespace: test
+  labels:
+    app: ocelot
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ocelot
+
+  template:
+    metadata:
+      labels:
+        app: ocelot
+
+    spec:
+      containers:
+      - name: ocelot
+        image: dockerhub.sihai.com:8081/ocelot/ocelot:1.0
+        volumeMounts:
+          - mountPath: /app/appsettings.json
+            name: appsettings
+            subPath: appsettings.json
+          - mountPath: /app/ocelot.json
+            name: ocelot
+            subPath: ocelot.json
+
+        ports:
+        - containerPort: 80
+
+      volumes:
+        - name: appsettings
+          configMap:
+            name: ocelot-appsettings
+            items:
+            - key: appsettings.json
+              path: appsettings.json
+        - name: ocelot
+          configMap:
+            name: ocelot-ocelot
+            items:
+            - key: ocelot.json
+              path: ocelot.json
+
+
+      imagePullSecrets:
+      - name: harbor
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ocelot
+  namespace: test
+spec:
+  selector:
+    app: ocelot
+  ports:
+  - port: 80
+    name: ocelot
+  type: NodePort
