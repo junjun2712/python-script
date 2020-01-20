@@ -1,0 +1,33 @@
+groups:
+- name: nodes
+  rules:
+  - alert: node_high_cpu_usage_70
+    expr: avg(rate(netdata_cpu_cpu_percentage_average{dimension="idle"}[1m])) by (instance) > 70
+    for: 1m
+    annotations:
+      description: '{{ $labels.job }} on ''{{ $labels.job }}'' CPU usage is at {{ humanize $value }}%.'
+      summary: CPU alert for container node '{{ $labels.job }}'
+
+  - alert: node_high_memory_usage_90
+    expr: 100 / sum(netdata_system_ram_MiB_average) by (instance)
+      * sum(netdata_system_ram_MiB_average{dimension=~"free|cached"}) by (instance) < 10
+    for: 1m
+    annotations:
+      description: '{{ $labels.instance }} memory usage is {{ humanize $value}}%.'
+      summary: Memory alert for container node '{{ $labels.instance }}'
+
+  - alert: node_low_root_filesystem_space_20
+    expr: 100 / sum(netdata_disk_space_GiB_average{family="/"}) by (instance)
+      * sum(netdata_disk_space_GiB_average{family="/",dimension=~"avail|cached"}) by (instance) < 20
+    for: 1m
+    annotations:
+      description: '{{ $labels.instance }} root filesystem space is {{ humanize $value}}%.'
+      summary: Root filesystem alert for container node '{{ $labels.instance }}'
+
+  - alert: node_low_root_filesystem_space_data
+    expr: 100 / sum(netdata_disk_space_GiB_average{family="/data"}) by (instance)
+      * sum(netdata_disk_space_GiB_average{family="/data",dimension=~"avail|cached"}) by (instance) < 20
+    for: 1m
+    annotations:
+      description: '{{ $labels.instance }} root filesystem space is {{ humanize $value}}%.'
+      summary: Root filesystem alert for container node '{{ $labels.instance }}'
