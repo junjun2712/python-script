@@ -1,0 +1,108 @@
+# my global config
+global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+        - localhost:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+  - /data/prometheus/alertmanager-0.17.0/rules.yml
+  #- /data/prometheus/alertmanager-0.17.0/k8s-rules.yml
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+    - targets: ['localhost:9090']
+
+  - job_name: 'linux'
+    static_configs:
+      - targets: ['172.18.11.250:9100']
+        labels:
+          instance: harbor
+
+   #   - targets: ['172.18.14.30:9100']
+   #     labels:
+   #       instance: test
+
+   #   - targets: ['172.18.11.250:9104']
+   #     labels:
+   #       instance: mysql
+
+   #   - targets: ['172.18.11.250:9121']
+   #     labels:
+   #       instance: redis
+
+      - targets: ['172.18.14.95:9100']
+        labels:
+          instance: test-paas-k8s-master-02
+
+      - targets: ['172.18.14.98:9100']
+        labels:
+          instance: test-paas-k8s-node-02
+
+      - targets: ['172.18.14.97:9100']
+        labels:
+          instance: test-paas-k8s-node-03
+
+  - job_name: 'federate'
+    scrape_interval: 15s
+    honor_labels: true
+    metrics_path: '/federate'
+    params:
+      'match[]':
+        - '{job="prometheus*"}'
+        - '{__name__=~"job:.*"}'
+        - '{__name__=~"node:.*"}'
+        - '{__name__=~"kubernetes.*"}'
+        - '{__name__=~"nginx.*"}'
+        - '{__name__=~"api.*"}'
+        - '{__name__=~"container.*"}'
+        - '{__name__=~"process.*"}'
+    static_configs:
+      - targets:
+        - '172.18.14.97:30003'
+
+  - job_name: web_status
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets: ['http://test.sihai.com']
+        labels:
+          instance: test.sihai.com
+          group: web
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - target_label: __address__
+        replacement: 127.0.0.1:9115
+  - job_name: jenkins_status
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets: ['http://test.jenkins.sihai.com/login?']
+        labels:
+          instance: test.jenkins.sihai.com
+          group: web
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - target_label: __address__
+        replacement: 127.0.0.1:9115
