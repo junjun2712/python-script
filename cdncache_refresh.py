@@ -26,7 +26,7 @@ streamHandle.setFormatter(formatter)
 logger.addHandler(streamHandle)
 
 sdk = YdSdk({
-    "app_id": 'ijnGBqEzrNY54Kd6FzmM',
+    "app_id": 'xxxxx',
     "app_secert": 'xxxxxxx',
     "api_pre": "http://apiv4.yundun.com/V4/",
     "user_id": xxxxx,
