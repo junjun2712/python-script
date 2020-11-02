@@ -1,11 +1,17 @@
-﻿# -*- coding: UTF-8 -*-
+#git clone https://github.com/python-telegram-bot/python-telegram-bot --recursive
+# cd python-telegram-bot
+# python setup.py install
+
+# -*- coding: UTF-8 -*-
 import os
 from PIL import ImageGrab
 from PIL import Image
 import math
 import operator
 from functools import reduce
-
+import telegram
+bot = telegram.Bot(token="888888888888888888888")
+chatID = "-8888888888" 
 
 
 def image_contrast(img1, img2):
@@ -28,6 +34,9 @@ if __name__ == '__main__':
   img1 = "c:\\img1.png" # 指定图片路径
   img2 = "c:\\img3.png"
   result = image_contrast(img1,img2)
-  print(result)
-  os.remove('c:\\img3.png')  
-  os.rename('c:\\img1.png','c:\\img3.png')
+  print(result) 
+  if int(result) > 0:
+      bot.sendMessage(chat_id=chatID, text='买')
+      os.remove('c:\\img3.png')  
+      os.rename('c:\\img1.png','c:\\img3.png')
+  
