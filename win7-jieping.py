@@ -1,4 +1,5 @@
-#git clone https://github.com/python-telegram-bot/python-telegram-bot --recursive
+#pip install python-telegram-bot==9.0.0
+#wget https://github.com/python-telegram-bot/python-telegram-bot/releases/download/9.0.0/python-telegram-bot-9.0.0.tar.gz
 # cd python-telegram-bot
 # python setup.py install
 
