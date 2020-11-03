@@ -1,3 +1,4 @@
+#pip install Pillow
 #pip install python-telegram-bot==9.0.0
 #wget https://github.com/python-telegram-bot/python-telegram-bot/releases/download/9.0.0/python-telegram-bot-9.0.0.tar.gz
 # cd python-telegram-bot
