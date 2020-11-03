@@ -5,6 +5,7 @@
 
 # -*- coding: UTF-8 -*-
 import os
+import time
 from PIL import ImageGrab
 from PIL import Image
 import math
@@ -27,17 +28,19 @@ def image_contrast(img1, img2):
   return result
 
 if __name__ == '__main__':
-  bbox = (15, 206, 113, 668)
-  img = ImageGrab.grab(bbox)
-  img.save("img1.png")
-  #os.rename('c:\\img1.png','c:\\img2.png')
-  #img.show()
-  img1 = "c:\\img1.png" # 指定图片路径
-  img2 = "c:\\img3.png"
-  result = image_contrast(img1,img2)
-  print(result) 
-  if int(result) > 0:
-      bot.sendMessage(chat_id=chatID, text='买')
-      os.remove('c:\\img3.png')  
-      os.rename('c:\\img1.png','c:\\img3.png')
+  while 1==1:
+    time.sleep(60)
+    bbox = (15, 206, 113, 668)
+    img = ImageGrab.grab(bbox)
+    img.save("img1.png")
+    #os.rename('c:\\img1.png','c:\\img2.png')
+    #img.show()
+    img1 = "c:\\img1.png" # 指定图片路径
+    img2 = "c:\\img3.png"
+    result = image_contrast(img1,img2)
+    print(result) 
+    if int(result) > 0:
+        bot.sendMessage(chat_id=chatID, text='买')
+        os.remove('c:\\img3.png')  
+        os.rename('c:\\img1.png','c:\\img3.png')
   
