@@ -29,7 +29,7 @@ es=Elasticsearch(["10.3.18.48"],http_auth=('elastic','xxxxxxxx'))
 def merchant():
 
     for merchant_number_dy in open("/data/merchant_check_dy/conf.list"):
-        shbiao = merchant_number.replace('\n', '').replace('\r', '')
+        shbiao = merchant_number_dy.replace('\n', '').replace('\r', '')
         body={"query":{"bool":{"must":[{"term":{"message":shbiao}},{"term":{"message":"filter"}}],"filter":{"range":{"@timestamp":{"gte":"now-1m/m","lte":"now/m","format":"epoch_millis"}}}}}}
 
         data=es.search(index="proddy-backend-dy_betinfo*",body=body)
