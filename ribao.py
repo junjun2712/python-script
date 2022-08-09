@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+#pip3 install pyocr
+#pip3 install install atlassian-python-api
+#pip3 install pdfminer
+#pip3 install python-telegram-bot
+
 import telegram
 import pyocr
 import importlib
